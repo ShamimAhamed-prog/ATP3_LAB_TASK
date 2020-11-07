@@ -6,18 +6,25 @@ router.get('/', (req, res)=>{
 });
 
 router.post('/', (req, res)=>{
+	var userlist = [
+		['1', 'alamin', 'abc@gmail.com', '123'],
+		['2', 'pqr', 'pqr@gmail.com', '123'],
+		['3', 'xyz', 'xyz@gmail.com', '123'],
+		['4','nur','nur@gmail.com','1']
+	];
+	req.session.userlist = userlist;
+	req.session.uid = '4';
+	userlist = req.session.userlist;
+	var loggedin = false;
 
-	if(req.body.username == req.body.password){
-		
+	userlist.forEach(function(user){
+		if(req.body.username == user[1] && req.body.password == user[3]){
+			loggedin = true;
+		}
+	});
 
-		/*var userlist =[
-			[],
-			[],
-			[]
-		];
-		req.session.userlist = userlist;*/
-		
-		res.cookie('uname', 'alamin');
+	if(loggedin){
+		res.cookie('uname', req.body.username);
 		res.redirect('/home');
 
 	}else{
@@ -27,3 +34,6 @@ router.post('/', (req, res)=>{
 
 
 module.exports = router;
+
+
+
